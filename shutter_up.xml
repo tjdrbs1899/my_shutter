@@ -1,40 +1,40 @@
 <macro name="shutter_up" icon="UP">
-    <!-- サービス確認 -->
-    <assert-service description="Ensure shutter control service" uuid="YOUR_SERVICE_UUID">
-        <!-- 書き込み可能なキャラクタリスティック -->
-        <assert-characteristic description="Ensure write characteristic" uuid="YOUR_WRITE_CHAR_UUID">
+    <!-- 서비스 확인 -->
+    <assert-service description="Ensure shutter control service" uuid="2141e110-213a-11e6-b67b-9e71128cae77">
+        <!-- 쓰기 가능한 캐릭터리스틱 -->
+        <assert-characteristic description="Ensure write characteristic" uuid="2141e112-213a-11e6-b67b-9e71128cae77">
             <property name="WRITE_WITHOUT_RESPONSE" requirement="MANDATORY"/>
         </assert-characteristic>
-        <!-- 通知可能なキャラクタリスティック -->
-        <assert-characteristic description="Ensure notify characteristic" uuid="YOUR_NOTIFY_CHAR_UUID">
+        <!-- 알림 가능한 캐릭터리스틱 -->
+        <assert-characteristic description="Ensure notify characteristic" uuid="2141e111-213a-11e6-b67b-9e71128cae77">
             <property name="NOTIFY" requirement="MANDATORY"/>
         </assert-characteristic>
     </assert-service>
 
-    <!-- シャッター UP コマンド送信 (Frame 693) -->
+    <!-- 셔터 UP 명령 전송 (Frame 693) -->
     <write description="Write UP command (0100) to write characteristic"
-           characteristic-uuid="YOUR_WRITE_CHAR_UUID"
-           service-uuid="YOUR_SERVICE_UUID"
+           characteristic-uuid="2141e112-213a-11e6-b67b-9e71128cae77"
+           service-uuid="2141e110-213a-11e6-b67b-9e71128cae77"
            value="0100"
            type="WRITE_REQUEST"/>
     
-    <!-- デバイス ACK (Frame 696) を待つ -->
+    <!-- ACK 대기 (Frame 696) -->
     <wait-for-notification description="Wait for write response (ACK)"
-                           characteristic-uuid="YOUR_WRITE_CHAR_UUID"
-                           service-uuid="YOUR_SERVICE_UUID"/>
+                           characteristic-uuid="2141e112-213a-11e6-b67b-9e71128cae77"
+                           service-uuid="2141e110-213a-11e6-b67b-9e71128cae77"/>
 
-    <!-- Optional: Frame 699 の追加コマンド送信 -->
+    <!-- 옵션: 추가 제어 명령 전송 (Frame 699) -->
     <write description="Optional: Additional control (Frame 699)" 
-           characteristic-uuid="YOUR_WRITE_CHAR_UUID"
-           service-uuid="YOUR_SERVICE_UUID"
+           characteristic-uuid="2141e112-213a-11e6-b67b-9e71128cae77"
+           service-uuid="2141e110-213a-11e6-b67b-9e71128cae77"
            value="030b0000"
            type="WRITE_COMMAND"/>
 
-    <!-- デバイスの通知を受信 (Frame 701) -->
+    <!-- 디바이스 상태 알림 수신 (Frame 701) -->
     <wait-for-notification description="Wait for device status notification"
-                           characteristic-uuid="YOUR_NOTIFY_CHAR_UUID"
-                           service-uuid="YOUR_SERVICE_UUID">
-        <!-- 必要に応じて通知値の検証も可能 -->
+                           characteristic-uuid="2141e111-213a-11e6-b67b-9e71128cae77"
+                           service-uuid="2141e110-213a-11e6-b67b-9e71128cae77">
+        <!-- 필요 시 알림 값 검증 가능 -->
         <!-- <assert-value description="Check status value" value="000018006c"/> -->
     </wait-for-notification>
 </macro>
